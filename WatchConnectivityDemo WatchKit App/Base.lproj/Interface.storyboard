@@ -52,6 +52,9 @@
                         </group>
                         <label width="120" height="40" alignment="center" verticalAlignment="center" text="Label" textAlignment="center" id="yyL-Dz-SKu"/>
                     </items>
+                    <connections>
+                        <outlet property="statusLabel" destination="yyL-Dz-SKu" id="YUE-bC-ZHX"/>
+                    </connections>
                 </controller>
             </objects>
         </scene>

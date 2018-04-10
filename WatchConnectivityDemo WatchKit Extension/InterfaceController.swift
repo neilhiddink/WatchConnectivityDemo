@@ -8,19 +8,64 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
+// MARK: InterfaceController: WKInterfaceController
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
+
+    // MARK: Properties
+    let session: WCSession!
+    
+    // MARK: IB Outlets
+    
+    @IBOutlet weak var statusLabel: WKInterfaceLabel!
+    
+    // MARK: Life Cycle
+    
+    override init() {
+        if(WCSession.isSupported()) {
+            session =  WCSession.default
+        } else {
+            session = nil
+        }
+    }
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
     }
     
+    override func willActivate() {
+        super.willActivate()
+        if (WCSession.isSupported()) {
+            session.delegate = self
+            session.activate()
+        }
+        self.statusLabel.setText("")
+    }
+    
+    // MARK: WCSessionDelegate
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        guard activationState == .activated else {
+            print("WCSession not activated.")
+            return
+        }
+    }
+    
     // MARK: Helper Methods
     
     func buttonPressed(name: String) {
-        print("Button Pressed: \(name)")
+        if (WCSession.isSupported()) {
+            
+            let messageDict = ["buttonName": name]
+            session.sendMessage(messageDict, replyHandler: { (content: [String: Any]) -> Void in
+                print("Our counterpart sent something back. This is optional")
+            }, errorHandler: { (error) -> Void in
+                print("We got an error from our paired device : \(error.localizedDescription)")
+            })
+        }
     }
     
     // MARK: IB Actions
