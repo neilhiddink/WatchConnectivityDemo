@@ -91,7 +91,20 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         if let i = buttons.index(of: sender) {
-            let messageDict = ["buttonName" : i]
+            var string = ""
+            switch i {
+                case 0:
+                    string = "Hearts"
+                case 1:
+                    string = "Spades"
+                case 2:
+                    string = "Clubs"
+                case 3:
+                    string = "Diamonds"
+                default:
+                    break
+            }
+            let messageDict = ["buttonName" : string]
             
             session.sendMessage(messageDict, replyHandler: { (content: [String : Any]) -> Void in
                 print("Our counterpart sent something back. This is optional.")

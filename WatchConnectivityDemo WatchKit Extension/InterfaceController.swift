@@ -57,30 +57,12 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         print("Message from iPhone")
         if let nameString = message["buttonName"] as! String? {
-            var index = 0
-            switch nameString {
-                case "Hearts":
-                    index = 0
-                case "Spades":
-                    index = 1
-                case "Clubs":
-                    index = 2
-                case "Diamonds":
-                    index = 3
-                default:
-                    break
-            }
-            let labelString = ["Hearts", "Spades", "Clubs", "Diamonds"][index]
-            
             DispatchQueue.main.async {
-                self.statusLabel.setText(labelString)
+                self.statusLabel.setText(nameString)
             }
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                print("setlabel")
                 self.statusLabel.setText("")
             }
-            
         }
     }
     
